@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday ❤️</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:black;
+  color:white;
+  font-family:Arial,Helvetica,sans-serif;
+  overflow:hidden;
+}
+
+/* Fireworks background */
+canvas{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100vw;
+  height:100vh;
+  z-index:-1;
+}
+
+/* Pages */
+.page{
+  position:absolute;
+  width:100%;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  z-index:1;
+}
+
+.hidden{display:none;}
+
+button{
+  padding:12px 25px;
+  font-size:16px;
+  border:none;
+  border-radius:20px;
+  cursor:pointer;
+  margin-top:20px;
+}
+
+/* Cake */
+.cake{
+  width:200px;
+  height:120px;
+  background:#ff4d4d;
+  border-radius:0 0 20px 20px;
+  position:relative;
+}
+.knife{
+  width:10px;
+  height:80px;
+  background:red;
+  position:absolute;
+  top:-40px;
+  left:95px;
+  cursor:pointer;
+}
+.candle{
+  width:10px;
+  height:30px;
+  background:yellow;
+  position:absolute;
+  top:-30px;
+}
+.c1{left:40px;}
+.c2{left:90px;}
+.c3{left:140px;}
+
+.box{
+  width:90%;
+  max-width:600px;
+  background:rgba(255,255,255,0.1);
+  padding:20px;
+  border-radius:15px;
+  white-space:pre-line;
+  margin-top:20px;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="fw"></canvas>
+
+<!-- PAGE 1 -->
+<div id="p1" class="page">
+  <h1>🎉 Happy Birthday ❤️ Devyani ❤️ 🎉</h1>
+  <p id="timer" style="margin-top:15px;"></p>
+</div>
+
+<!-- PAGE 2 -->
+<div id="p2" class="page hidden">
+  <div style="position:relative;">
+    <div class="cake" id="cake">
+      <div class="candle c1"></div>
+      <div class="candle c2"></div>
+      <div class="candle c3"></div>
+      <div class="knife" id="knife"></div>
+    </div>
+  </div>
+  <button id="nextBtn" class="hidden">Continue 🎁</button>
+</div>
+
+<!-- PAGE 3 -->
+<div id="p3" class="page hidden">
+  <h2>💌 A Letter For You 💌</h2>
+  <div class="box" id="text"></div>
+</div>
+
+<script>
+// Pages
+const p1=document.getElementById("p1");
+const p2=document.getElementById("p2");
+const p3=document.getElementById("p3");
+
+// Countdown
+let t=10;
+const timer=setInterval(()=>{
+  document.getElementById("timer").innerText="Cake cutting in "+t+" seconds 🎂";
+  t--;
+  if(t<0){
+    clearInterval(timer);
+    p1.classList.add("hidden");
+    p2.classList.remove("hidden");
+  }
+},1000);
+
+// Cake cut
+const knife=document.getElementById("knife");
+const cake=document.getElementById("cake");
+const nextBtn=document.getElementById("nextBtn");
+
+knife.onclick=()=>{
+  cake.style.height="60px";
+  knife.style.transform="translateY(20px)";
+  nextBtn.classList.remove("hidden");
+};
+
+nextBtn.onclick=()=>{
+  p2.classList.add("hidden");
+  p3.classList.remove("hidden");
+  typeText();
+};
+
+// Typing effect
+const letter=`My Dearest Devyani ❤️
+
+Happy Birthday to the most beautiful soul in my life.
+You are my happiness, my strength, my safe place.
+
+No matter what life throws at us,
+I promise to stand with you, fight for us,
+and love you more every single day.
+
+You are not just my love,
+you are my forever.
+
+Always yours,
+❤️ Shampy`;
+
+function typeText(){
+  const el=document.getElementById("text");
+  let i=0;
+  const interval=setInterval(()=>{
+    el.innerHTML+=letter[i];
+    i++;
+    if(i>=letter.length) clearInterval(interval);
+  },40);
+}
+
+// Fireworks
+const canvas=document.getElementById("fw");
+const ctx=canvas.getContext("2d");
+canvas.width=innerWidth;
+canvas.height=innerHeight;
+
+window.onresize=()=>{
+  canvas.width=innerWidth;
+  canvas.height=innerHeight;
+};
+
+let particles=[];
+function firework(){
+  const x=Math.random()*canvas.width;
+  const y=Math.random()*canvas.height/2;
+  for(let i=0;i<50;i++){
+    particles.push({
+      x,y,
+      vx:(Math.random()-0.5)*5,
+      vy:(Math.random()-0.5)*5,
+      life:100
+    });
+  }
+}
+function animate(){
+  ctx.fillStyle="rgba(0,0,0,0.2)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  particles.forEach((p,i)=>{
+    p.x+=p.vx;
+    p.y+=p.vy;
+    p.life--;
+    ctx.fillStyle="white";
+    ctx.fillRect(p.x,p.y,2,2);
+    if(p.life<=0) particles.splice(i,1);
+  });
+  requestAnimationFrame(animate);
+}
+animate();
+setInterval(firework,700);
+</script>
+
+</body>
+</html>
