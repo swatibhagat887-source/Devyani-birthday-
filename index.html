@@ -104,7 +104,7 @@ button{
 <!-- PAGE 1 -->
 <div id="p1" class="page">
   <h1>🎉 Happy Birthday ❤️ Devyani ❤️ 🎉</h1>
-  <p id="timer"></p>
+  <p id="timer" style="margin-top:15px;"></p>
 </div>
 
 <!-- PAGE 2 -->
@@ -132,104 +132,129 @@ button{
 
 <script>
 // Pages
-const p1=p1=document.getElementById("p1");
-const p2=document.getElementById("p2");
-const p3=document.getElementById("p3");
+const p1 = document.getElementById("p1");
+const p2 = document.getElementById("p2");
+const p3 = document.getElementById("p3");
 
 // Countdown
-let t=10;
-const timer=setInterval(()=>{
-  document.getElementById("timer").innerText="Cake cutting in "+t+" seconds 🎂";
+let t = 10;
+const timer = setInterval(() => {
+  document.getElementById("timer").innerText =
+    "Cake cutting in " + t + " seconds 🎂";
   t--;
-  if(t<0){
+  if (t < 0) {
     clearInterval(timer);
     p1.classList.add("hidden");
     p2.classList.remove("hidden");
   }
-},1000);
+}, 1000);
 
 // Cake cut
-const knife=document.getElementById("knife");
-const cake=document.getElementById("cake");
-const go=document.getElementById("go");
+const knife = document.getElementById("knife");
+const cake = document.getElementById("cake");
+const go = document.getElementById("go");
 
-knife.onclick=()=>{
-  cake.style.height="60px";
-  knife.style.transform="translateY(20px)";
+knife.onclick = () => {
+  cake.style.height = "60px";
+  knife.style.transform = "translateY(20px)";
   go.classList.remove("hidden");
 };
 
-go.onclick=()=>{
+go.onclick = () => {
   p2.classList.add("hidden");
   p3.classList.remove("hidden");
-  show('letter');
+  show("letter");
 };
 
-// Typing
+// Typing effect
 function typeText(text){
-  const box=document.getElementById("box");
-  box.innerHTML="";
-  let i=0;
-  const interval=setInterval(()=>{
-    box.innerHTML+=text[i];
+  const box = document.getElementById("box");
+  box.innerHTML = "";
+  let i = 0;
+  const interval = setInterval(()=>{
+    box.innerHTML += text[i];
     i++;
-    if(i>=text.length) clearInterval(interval);
-  },25);
+    if(i >= text.length) clearInterval(interval);
+  }, 25);
 }
 
 // Content
 function show(x){
-  if(x==="photo"){
-    document.getElementById("box").innerHTML="📸 Add your photos here";
+  if(x === "photo"){
+    document.getElementById("box").innerHTML =
+      "📸 Add your photos here";
   }
-  if(x==="voice"){
-    document.getElementById("box").innerHTML="🎧 Add your voice message here";
+  if(x === "voice"){
+    document.getElementById("box").innerHTML =
+      "🎧 Add your voice message here";
   }
-  if(x==="letter"){
+  if(x === "letter"){
     typeText(`My Dearest Devyani ❤️,
 
-Today, after everything we went through, I want to tell you how much you mean to me. Even in our fights, even in the moments when we misunderstood each other, my heart never wavered. You are my world, my safe place, my happiness.
+Today, after everything we went through, I want to tell you how much you mean to me.
+Even in our fights, even in misunderstandings, my heart never left you.
 
-I promise to hold your hand through every storm, to be your shoulder when you cry, and your strength when you feel weak. I will always fight for us, for our love, and for our dreams together.
+You are my world, my safe place, my happiness.
+I promise to hold your hand through every storm,
+to stand by you in every moment,
+and to always fight for us.
 
 Forever yours,
 ❤️ Shampy`);
   }
-  if(x==="promise"){
+  if(x === "promise"){
     typeText(`My Love ❤️,
 
-I promise to always choose you — in every fight, in every joy, and in every moment. I promise to never give up on us and to love you endlessly.
+I promise to always choose you.
+In every fight, every joy, every moment.
+
+I promise to never give up on us,
+to protect your heart,
+and to love you endlessly.
 
 🤞 Forever your Shampy`);
   }
 }
 
 // Fireworks
-const canvas=document.getElementById("fw");
-const ctx=canvas.getContext("2d");
-canvas.width=innerWidth;
-canvas.height=innerHeight;
-window.onresize=()=>{canvas.width=innerWidth;canvas.height=innerHeight;};
+const canvas = document.getElementById("fw");
+const ctx = canvas.getContext("2d");
+canvas.width = innerWidth;
+canvas.height = innerHeight;
 
-let parts=[];
+window.onresize = () => {
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
+};
+
+let particles = [];
 function boom(){
-  const x=Math.random()*canvas.width;
-  const y=Math.random()*canvas.height/2;
+  const x = Math.random() * canvas.width;
+  const y = Math.random() * canvas.height / 2;
   for(let i=0;i<40;i++){
-    parts.push({x,y,vx:(Math.random()-0.5)*4,vy:(Math.random()-0.5)*4,l:80});
+    particles.push({
+      x, y,
+      vx:(Math.random()-0.5)*4,
+      vy:(Math.random()-0.5)*4,
+      life:80
+    });
   }
 }
+
 function animate(){
-  ctx.fillStyle="rgba(0,0,0,0.2)";
+  ctx.fillStyle = "rgba(0,0,0,0.2)";
   ctx.fillRect(0,0,canvas.width,canvas.height);
-  parts.forEach((p,i)=>{
-    p.x+=p.vx;p.y+=p.vy;p.l--;
+  particles.forEach((p,i)=>{
+    p.x+=p.vx;
+    p.y+=p.vy;
+    p.life--;
     ctx.fillStyle="white";
     ctx.fillRect(p.x,p.y,2,2);
-    if(p.l<=0) parts.splice(i,1);
+    if(p.life<=0) particles.splice(i,1);
   });
   requestAnimationFrame(animate);
 }
+
 animate();
 setInterval(boom,700);
 </script>
